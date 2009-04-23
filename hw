@@ -84,7 +84,7 @@ $ARCMD
 ### Send out the email ###
 echo "Sending email..."
 echo "Please compile on Linux Lab systems. Type 'tar xvf $TARDIR.tar.gz' to expand archive." | mutt -x -a $TARFILE -s $SUBJECT $ADDRESS1 
-echo "Please compile on Linux Lab systems. Type 'tar xvf $TARDIR.tar.gz' to expand archive." | mutt -x -a $TARFILE -s $SUBJECT $ADDRESS1 
+echo "Please compile on Linux Lab systems. Type 'tar xvf $TARDIR.tar.gz' to expand archive." | mutt -x -a $TARFILE -s $SUBJECT $ADDRESS2 
 
 echo "Done."
 
