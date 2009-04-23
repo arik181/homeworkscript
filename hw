@@ -1,0 +1,74 @@
+#!/bin/sh
+
+### hw ###
+### A Homework Preparation Script. 
+### Adds headers to main project files, creates a tarfile,
+### and emails the assignment to both myself and the grader.
+### Also forces my hand in creating documentation.
+
+
+### File Variables ###
+TARDIR=arik182
+TARFILE=$TARDIR.tar
+APPNAME=mazegen
+EXTENSION=$3
+TMPFILE=~/tmp/header.txt.tmp
+HEADERFILE=~/tmp/header.txt
+
+### Course Variables ###
+COURSENAME="CS202"
+ASSIGNMENT="Assignment 2"
+
+### Output Variables ###
+# Type of archive to output 
+ADDRESS1="arik181@gmail.com"
+ADDRESS2="karlafgr@cs.pdx.edu"
+SUBJECT="Quirozoliver_A2_CS202_Submission"
+ARCMD="tar czvf $TARDIR.tar $TARDIR"
+
+
+
+### Script Start ###
+echo "Cleaning up..."
+rm -rf $TARDIR
+echo "Creating directory..."
+mkdir $TARDIR
+echo "Copying targets..."
+cp Makefile *.txt $TARDIR/
+
+### Add headers to the main files ###
+echo "Creating headers..."
+
+cp $HEADERFILE $TMPFILE
+sed -i "/__assignment__/ s/__assignment__/$ASSIGNMENT/g" $TMPFILE
+sed -i "/__coursename__/ s/__coursename__/$COURSENAME/g" $TMPFILE 
+
+for filename in *.h
+do 
+	cat $TMPFILE >> ./$TARDIR/${filename}
+	sed -i "/__filename__/ s/__filename__/${filename}/g" ./$TARDIR/${filename} 
+	vim +12 ./$TARDIR/${filename} 
+	cat ${filename} >> ./$TARDIR/${filename}
+done
+
+for filename in *.cpp
+do 
+	cat $TMPFILE >> ./$TARDIR/${filename}
+	sed -i "/__filename__/ s/__filename__/${filename}/g" ./$TARDIR/${filename}
+	vim +12 ./$TARDIR/${filename} 
+	cat ${filename} >> ./$TARDIR/${filename}
+done
+
+### Get rid of temp files ###
+rm -rf $TMPFILE
+
+### Create an archive ###
+echo "Creating archive..."
+$ARCMD 
+
+### Send out the email ###
+echo "Sending email..."
+echo "Please compile on Linux Lab systems. Type 'tar xvf arik182.tar.gz' to expand archive." | mutt -x -a $TARFILE -s $SUBJECT $ADDRESS1 
+
+echo "Done."
+

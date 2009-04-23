@@ -1,0 +1,17 @@
+/*** 
+ * 		
+ *    File:               __filename__ 
+ *    Class:              __coursename__
+ *    Assignment:         __assignment__
+ *
+ *    Author:             Devin Quirozoliver
+ *                        arik182@cs.pdx.edu
+ * 
+ *    Purpose of File: 
+ * 
+ *        __purpose__
+ * 
+ ***/
+
+
+
