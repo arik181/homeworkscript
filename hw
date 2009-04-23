@@ -13,6 +13,7 @@ TARFILE=$TARDIR.tar
 APPNAME=mazegen
 EXTENSION=$3
 TMPFILE=~/tmp/header.txt.tmp
+# Location of a preexisting header file containing flags.
 HEADERFILE=~/tmp/header.txt
 
 ### Course Variables ###
