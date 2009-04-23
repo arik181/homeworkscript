@@ -1,32 +1,45 @@
 #!/bin/sh
 
 ### hw ###
-### A Homework Preparation Script. 
-### Adds headers to main project files, creates a tarfile,
-### and emails the assignment to both myself and the grader.
-### Also forces my hand in creating documentation.
+#   A Homework Preparation Script. 
+#   Adds headers to main project files, creates a tarfile,
+#   and emails the assignment to both myself and the grader.
+#   Also forces my hand in creating documentation.
+#   Requires the following applications:
+#  
+#   mutt
+#   vim
+#   sed
+#   cat
+#   echo
+#   tar
+#   gzip
+#
+#   Before executing, be sure you 
+#       1.) have a preexisting ~/tmp directory
+#       2.) this script is in your path
+#       3.) You are in the directory of your submission
+#
+###
 
 
 ### File Variables ###
-TARDIR=arik182
-TARFILE=$TARDIR.tar
-APPNAME=mazegen
-EXTENSION=$3
-TMPFILE=~/tmp/header.txt.tmp
-# Location of a preexisting header file containing flags.
-HEADERFILE=~/tmp/header.txt
-
-### Course Variables ###
-COURSENAME="CS202"
-ASSIGNMENT="Assignment 2"
+# Name of the tar directory to be emailed.
+TARDIR=""
+TARFILE="$TARDIR.tar"
+APPNAME=""
+HEADERFILE="~/tmp/header.txt"
 
 ### Output Variables ###
-# Type of archive to output 
-ADDRESS1="arik181@gmail.com"
-ADDRESS2="karlafgr@cs.pdx.edu"
-SUBJECT="Quirozoliver_A2_CS202_Submission"
+COURSENAME=""
+ASSIGNMENT=""
+ADDRESS1=""
+ADDRESS2=""
+SUBJECT=""
 ARCMD="tar czvf $TARDIR.tar $TARDIR"
 
+# Small temp file created during usage.
+TMPFILE="~/tmp/header.txt.tmp"
 
 
 ### Script Start ###
@@ -38,6 +51,7 @@ echo "Copying targets..."
 cp Makefile *.txt $TARDIR/
 
 ### Add headers to the main files ###
+### Opens vim on each file.
 echo "Creating headers..."
 
 cp $HEADERFILE $TMPFILE
@@ -48,7 +62,7 @@ for filename in *.h
 do 
 	cat $TMPFILE >> ./$TARDIR/${filename}
 	sed -i "/__filename__/ s/__filename__/${filename}/g" ./$TARDIR/${filename} 
-	vim +12 ./$TARDIR/${filename} 
+	vim "+/__purpose__" ./$TARDIR/${filename} 
 	cat ${filename} >> ./$TARDIR/${filename}
 done
 
@@ -56,12 +70,12 @@ for filename in *.cpp
 do 
 	cat $TMPFILE >> ./$TARDIR/${filename}
 	sed -i "/__filename__/ s/__filename__/${filename}/g" ./$TARDIR/${filename}
-	vim +12 ./$TARDIR/${filename} 
+	vim "+/__purpose__" ./$TARDIR/${filename} 
 	cat ${filename} >> ./$TARDIR/${filename}
 done
 
 ### Get rid of temp files ###
-rm -rf $TMPFILE
+rm -rf $TMPFILE $TARDIR $TARFILE
 
 ### Create an archive ###
 echo "Creating archive..."
@@ -69,7 +83,8 @@ $ARCMD
 
 ### Send out the email ###
 echo "Sending email..."
-echo "Please compile on Linux Lab systems. Type 'tar xvf arik182.tar.gz' to expand archive." | mutt -x -a $TARFILE -s $SUBJECT $ADDRESS1 
+echo "Please compile on Linux Lab systems. Type 'tar xvf $TARDIR.tar.gz' to expand archive." | mutt -x -a $TARFILE -s $SUBJECT $ADDRESS1 
+echo "Please compile on Linux Lab systems. Type 'tar xvf $TARDIR.tar.gz' to expand archive." | mutt -x -a $TARFILE -s $SUBJECT $ADDRESS1 
 
 echo "Done."
 
